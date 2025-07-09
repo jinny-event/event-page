@@ -71,6 +71,7 @@
 
       if (localStorage.getItem(key)) {
         result.innerText = "✅ 오늘은 이미 참여하셨습니다. 내일 또 참여해 주세요!";
+        result.style.color = "gray";
         joinBtn.disabled = true;
         document.getElementById("extra-event").style.display = "block"; // 이미 참여한 경우에도 추가 이벤트 가능
       }
