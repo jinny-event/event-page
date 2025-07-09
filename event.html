@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>길온 이벤트 참여</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      color: #333;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #2b72ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+    }
+    button:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+    #info {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🎉길온 이벤트 참여</h2>
+  <p id="info"></p>
+
+  <button id="join-btn">오늘 이벤트 참여하기</button>
+  <p id="result"></p>
+
+  <!-- 추가 이벤트 버튼 -->
+  <div id="extra-event" style="display: none;">
+    <p>🎁 더 많은 이벤트가 기다리고 있어요!</p>
+    <button onclick="goToExtraEvent()">이벤트 추가 참여하기</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const day = urlParams.get("day"); // URL에서 day 파라미터 추출
+    const info = document.getElementById("info");
+    const result = document.getElementById("result");
+    const joinBtn = document.getElementById("join-btn");
+
+    if (!day || isNaN(day) || day < 1 || day > 4) {
+      info.innerText = "⚠️ 잘못된 접근입니다. QR 코드를 다시 스캔해 주세요.";
+      joinBtn.style.display = "none";
+    } else {
+      info.innerText = `📅 오늘은 이벤트 ${day}일차입니다.`;
+
+      const key = "event_participated_day" + day;
+
+      if (localStorage.getItem(key)) {
+        result.innerText = "✅ 오늘은 이미 참여하셨습니다. 내일 또 참여해 주세요!";
+        joinBtn.disabled = true;
+        document.getElementById("extra-event").style.display = "block"; // 이미 참여한 경우에도 추가 이벤트 가능
+      }
+
+      joinBtn.addEventListener("click", () => {
+        localStorage.setItem(key, "true");
+        result.innerText = "🎉 참여 완료! 감사합니다 😊";
+        joinBtn.disabled = true;
+        document.getElementById("extra-event").style.display = "block";
+      });
+    }
+
+    function goToExtraEvent() {
+      window.location.href = "https://smartstore.naver.com/gilon"; // ← 원하는 URL로 변경하세요
+    }
+  </script>
+
+</body>
+</html>
